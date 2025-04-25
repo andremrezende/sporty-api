@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+echo " Running pre-commit checks..."
+
+# Check for Java formatting issues
+echo "\n Checking Java formatting..."
+./mvnw com.spotify.fmt:fmt-maven-plugin:check
+
+CHECK_FORMAT_RETURN_CODE=$?
+if [ $CHECK_FORMAT_RETURN_CODE -ne 0 ]; then
+  echo "${RED} Java formatting issues found${NC}"
+  ./mvnw com.spotify.fmt:fmt-maven-plugin:format
+  echo " Java code has been formatted. Please review the changes and commit again."
+  exit $CHECK_FORMAT_RETURN_CODE
+fi
+
+# Check YAML files
+echo "\n Checking YAML files..."
+if command -v yamllint >/dev/null 2>&1; then
+  yamllint . || {
+    echo "${RED} Issues found in YAML files${NC}"
+    exit 1
+  }
+else
+  echo "${RED} yamllint not found. Run: pip install yamllint${NC}"
+fi
+
+# Check line length in text files
+echo "\n Checking line lengths..."
+find . -type f \( -name "*.md" -o -name "*.txt" -o -name "Makefile" \) -exec awk '
+  length > 120 {
+    printf "\033[0;31m %s: line %d has %d characters\033[0m\n", FILENAME, NR, length
+    exit 1
+  }
+' {} \; || {
+  echo "${RED} Found lines exceeding allowed length${NC}"
+  exit 1
+}
+
+echo "${GREEN} All checks passed successfully!${NC}"
