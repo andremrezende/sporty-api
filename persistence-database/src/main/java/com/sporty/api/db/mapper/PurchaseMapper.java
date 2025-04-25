@@ -6,11 +6,10 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(
-    componentModel = "spring",
-    uses = PurchaseItemMapper.class)
+@Mapper(componentModel = "spring", uses = PurchaseItemMapper.class)
 public interface PurchaseMapper {
   PurchaseMapper INSTANCE = Mappers.getMapper(PurchaseMapper.class);
+
   Purchase toModel(PurchaseEntity entity);
 
   PurchaseEntity toEntity(Purchase model);

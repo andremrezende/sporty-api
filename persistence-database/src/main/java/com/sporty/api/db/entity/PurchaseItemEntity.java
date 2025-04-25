@@ -70,7 +70,11 @@ public class PurchaseItemEntity extends BaseEntity {
     if (o == null || getClass() != o.getClass()) return false;
     if (!super.equals(o)) return false;
     PurchaseItemEntity that = (PurchaseItemEntity) o;
-    return quantity == that.quantity && Objects.equals(purchase, that.purchase) && Objects.equals(bookId, that.bookId) && Objects.equals(discount, that.discount) && Objects.equals(finalPrice, that.finalPrice);
+    return quantity == that.quantity
+        && Objects.equals(purchase, that.purchase)
+        && Objects.equals(bookId, that.bookId)
+        && Objects.equals(discount, that.discount)
+        && Objects.equals(finalPrice, that.finalPrice);
   }
 
   @Override
@@ -80,12 +84,17 @@ public class PurchaseItemEntity extends BaseEntity {
 
   @Override
   public String toString() {
-    return "PurchaseItemEntity{" +
-            "purchase=" + purchase +
-            ", bookId=" + bookId +
-            ", quantity=" + quantity +
-            ", discount=" + discount +
-            ", finalPrice=" + finalPrice +
-            '}';
+    return "PurchaseItemEntity{"
+        + "purchase="
+        + purchase
+        + ", bookId="
+        + bookId
+        + ", quantity="
+        + quantity
+        + ", discount="
+        + discount
+        + ", finalPrice="
+        + finalPrice
+        + '}';
   }
 }

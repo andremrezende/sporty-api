@@ -178,7 +178,7 @@
         </executions>
         <configuration>
           <executable>true</executable>
-          <mainClass>br.com.eventos.initializer.InitializerApplication</mainClass>
+          <mainClass>com.sporty.api.Application</mainClass>
           <addResources>true</addResources>
         </configuration>
       </plugin>

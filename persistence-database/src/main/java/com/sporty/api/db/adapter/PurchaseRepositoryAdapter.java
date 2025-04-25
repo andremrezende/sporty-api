@@ -5,7 +5,6 @@ import com.sporty.api.core.ports.PurchasePort;
 import com.sporty.api.db.entity.PurchaseEntity;
 import com.sporty.api.db.mapper.PurchaseMapper;
 import com.sporty.api.db.repository.BookJpaRepository;
-import com.sporty.api.db.repository.PurchaseItemRepository;
 import com.sporty.api.db.repository.PurchaseJpaRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -17,8 +16,9 @@ public class PurchaseRepositoryAdapter implements PurchasePort {
   private final PurchaseMapper mapper;
 
   public PurchaseRepositoryAdapter(
-          PurchaseJpaRepository purchaseJpaRepository,
-          BookJpaRepository bookJpaRepository, PurchaseMapper mapper) {
+      PurchaseJpaRepository purchaseJpaRepository,
+      BookJpaRepository bookJpaRepository,
+      PurchaseMapper mapper) {
     this.purchaseJpaRepository = purchaseJpaRepository;
     this.bookJpaRepository = bookJpaRepository;
     this.mapper = mapper;
@@ -29,10 +29,13 @@ public class PurchaseRepositoryAdapter implements PurchasePort {
   public Purchase save(Purchase purchase) {
     PurchaseEntity purchaseEntity = mapper.toEntity(purchase);
     PurchaseEntity finalPurchaseEntity = purchaseEntity;
-    purchaseEntity.getItems().forEach(item -> {
-      item.setFinalPrice(bookJpaRepository.findById(item.getBookId()).get().getBasePrice());
-      item.setPurchase(finalPurchaseEntity);
-    });
+    purchaseEntity
+        .getItems()
+        .forEach(
+            item -> {
+              item.setFinalPrice(bookJpaRepository.findById(item.getBookId()).get().getBasePrice());
+              item.setPurchase(finalPurchaseEntity);
+            });
     purchaseEntity = purchaseJpaRepository.save(purchaseEntity);
     return mapper.toModel(purchaseEntity);
   }

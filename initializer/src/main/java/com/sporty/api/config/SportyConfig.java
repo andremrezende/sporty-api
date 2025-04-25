@@ -46,8 +46,7 @@ public class SportyConfig {
       PurchaseJpaRepository purchaseJpaRepository,
       BookJpaRepository bookJpaRepository,
       PurchaseMapper purchaseMapper) {
-    return new PurchaseRepositoryAdapter(
-        purchaseJpaRepository, bookJpaRepository, purchaseMapper);
+    return new PurchaseRepositoryAdapter(purchaseJpaRepository, bookJpaRepository, purchaseMapper);
   }
 
   @Bean
